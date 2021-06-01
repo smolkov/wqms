@@ -1,0 +1,29 @@
+[package]
+name = "wqms"
+version = "0.1.0"
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+# config
+toml = "0.5.8"
+config = "0.11.0"
+# log
+femme = "2.1.1"
+
+# error
+anyhow = "1.0.37"
+
+# sirialize
+serde_json = "1.0.61"
+serde = { version = "1.0.118", features = ["derive"] }
+
+# utils
+dirs = "3.0.1"
+chrono = "0.4.19"
+
+# api 
+redis = "0.20.0"
+async-std = { version = "1.7.0", features = ["attributes"] }
+tide = "0.16.0"
