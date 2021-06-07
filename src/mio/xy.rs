@@ -13,7 +13,6 @@ use super::{
     Airflow,
     Pressure,
     Sensor,
-    SensorModel,
 };
 use serde::{Deserialize, Serialize};
 
@@ -65,34 +64,35 @@ pub struct XYSystem {
 }
 
 
-impl XYSystem {
-    pub fn new(settings:XySettings) -> XYSystem {
-        // crate::start();
-        let condensat_pump = Pump::new("condensat_pump");
-        let sample_pump = vec![Pump::new("sample1_pump"), Pump::new("sample2_pump"), Pump::new("sample3_pump"), Pump::new("sample4_pump"), Pump::new("sample5_pump"), Pump::new("sample6_pump")];
-        let humidity_valve = Valve::new("humidity_valve");
-        let tic_valve = Valve::new("tic_valve");
-        let tocdirect_valve = Valve::new("tocdirect_valve");
-        let injection_valve = Valve::new("injection_valve");
-        let fluid = vec![Fluid::new("fluid_sensor1")];
-        let relay = vec![Relay::new("relay1")];
-        let autosampler = Autosampler::new();
-        let stirrer = Stirrer::new("stirrer");
-        let furnace = Furnace::new();
-        let ticport = TicPort::new();
-        let cooler = Cooler::new();
-        let humidity = Humidity::new();
-        let airflow = Airflow::new();
-        let pressure = Pressure::new();
-        let ndir1 = Sensor::new("ndir1",SensorModel::NDIR1);
-        let ndir2 = Sensor::new("ndir2",SensorModel::NDIR2);
-        let tnb   = Sensor::new("tnb",SensorModel::TNB);
-        let codo  = Sensor::new("codo",SensorModel::CODO);
-        XYSystem{settings,
-            condensat_pump,sample_pump,humidity_valve,
-            tic_valve,injection_valve,tocdirect_valve,fluid,relay,
-            autosampler,stirrer,furnace,ticport,cooler,humidity,airflow,pressure,
-            ndir1,ndir2,codo,tnb
-        }
-    }
-}
+
+// impl XYSystem {
+//     pub fn new(settings:XySettings) -> XYSystem {
+//         // crate::start();
+//         let condensat_pump = Pump::new("condensat_pump");
+//         let sample_pump = vec![Pump::new("sample1_pump"), Pump::new("sample2_pump"), Pump::new("sample3_pump"), Pump::new("sample4_pump"), Pump::new("sample5_pump"), Pump::new("sample6_pump")];
+//         let humidity_valve = Valve::new("humidity_valve");
+//         let tic_valve = Valve::new("tic_valve");
+//         let tocdirect_valve = Valve::new("tocdirect_valve");
+//         let injection_valve = Valve::new("injection_valve");
+//         let fluid = vec![Fluid::new("fluid_sensor1")];
+//         let relay = vec![Relay::new("relay1")];
+//         let autosampler = Autosampler::new();
+//         let stirrer = Stirrer::new("stirrer");
+//         let furnace = Furnace::new();
+//         let ticport = TicPort::new();
+//         let cooler = Cooler::new();
+//         let humidity = Humidity::new();
+//         let airflow = Airflow::new();
+//         let pressure = Pressure::new();
+//         let ndir1 = Sensor::new("ndir1",SensorModel::NDIR1);
+//         let ndir2 = Sensor::new("ndir2",SensorModel::NDIR2);
+//         let tnb   = Sensor::new("tnb",SensorModel::TNB);
+//         let codo  = Sensor::new("codo",SensorModel::CODO);
+//         XYSystem{settings,
+//             condensat_pump,sample_pump,humidity_valve,
+//             tic_valve,injection_valve,tocdirect_valve,fluid,relay,
+//             autosampler,stirrer,furnace,ticport,cooler,humidity,airflow,pressure,
+//             ndir1,ndir2,codo,tnb
+//         }
+//     }
+// }

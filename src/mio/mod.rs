@@ -1,3 +1,5 @@
+pub mod interface;
+pub mod digital;
 pub mod airflow;
 pub mod humidity;
 pub mod pressure;
@@ -15,6 +17,7 @@ pub mod vessel;
 pub mod xy;
 
 
+pub use interface::*;
 pub use pump::Pump;
 pub use fluid::Fluid;
 pub use relay::Relay;
@@ -35,6 +38,6 @@ use crate::Result;
 
 
 
-pub fn simulation() -> Result<XYSystem> {
-    Ok(XYSystem::new(XySettings::default()))
-}
+// pub fn simulation() -> Result<XYSystem> {
+    // Ok(XYSystem::new(XySettings::default()))
+// }

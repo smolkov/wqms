@@ -1,27 +1,50 @@
-/// Fluid sensor
-/// 
-use crate::Result;
-use serde::{Deserialize, Serialize};
+/// Fluid sensor interface
+use std::path::{ PathBuf};
+use serde::{Serialize, Deserialize};
+// use async_trait::async_trait;
+use super::{*};
+
+// use std::convert::TryFrom;
+/// interface transfer
+// impl TryFrom<Interface> for Fluid {
+//     fn try_from(iface: Interface) -> Result<Self> {
+//         iface.set_itype(IType::Fluid)?;
+//         Ok(Self{
+//             path:iface.path,
+//         })
+//     }
+// }
 
 
-
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq)] 
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Fluid {
-    status: bool,
-    name :String,
+    path:PathBuf,
 }
 
-/// Single digital push-pull output pin
-impl Fluid {
-    pub fn new(name:&str) ->Self {
-        Self {
-            status: false,
-            name:name.to_owned(),
+
+impl From<&Interface> for Fluid {
+    #[inline]
+    fn from(device:&Interface) -> Fluid {
+        Fluid{
+            path: device.path.to_path_buf()
         }
     }
-    /// Check fluid sensor status 
-    pub fn status(&mut self) -> Result<bool>{
-        Ok(self.status)
+}
+impl From<&Fluid> for digital::DigIN {
+    #[inline]
+    fn from(fluid:&Fluid) -> digital::DigIN {
+        digital::DigIN{
+            path: fluid.path.to_path_buf()
+        }
+    }
+}
+impl Fluid {
+    pub fn empty(&self) -> Result<bool> {
+        digital::DigIN::from(self).is_high()
+    }
+
+    pub fn full(&self ) -> Result<bool> {
+        digital::DigIN::from(self).is_low()
     }
 }
 

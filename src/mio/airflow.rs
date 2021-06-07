@@ -31,6 +31,7 @@ pub struct Airflow {
     pub input : f32,
     pub output : f32,
     pub broken:bool,
+    
 }
 
 impl Airflow {
