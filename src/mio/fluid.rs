@@ -22,9 +22,9 @@ pub struct Fluid {
 }
 
 
-impl From<&Interface> for Fluid {
+impl From<Interface> for Fluid {
     #[inline]
-    fn from(device:&Interface) -> Fluid {
+    fn from(device:Interface) -> Fluid {
         Fluid{
             path: device.path.to_path_buf()
         }

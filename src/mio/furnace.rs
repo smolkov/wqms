@@ -10,25 +10,14 @@ use std::path::PathBuf;
 use serde::{Serialize, Deserialize};
 // use async_trait::async_trait;
 use super::*;
-// use std::convert::TryFrom;
-/// interface transfer
-
-// impl TryFrom<Interface> for Furnace {
-//     fn try_from(iface: Interface) -> Result<Self> {
-//         iface.set_itype(IType::Furnace)?;
-//         Ok(Self{
-//             path:iface.path,
-//         })
-//     }
-// }
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Furnace {
     pub path: PathBuf,
 }
 
-impl From<&Interface> for Furnace {
+impl From<Interface> for Furnace {
     #[inline]
-    fn from(device:&Interface) -> Furnace {
+    fn from(device:Interface) -> Furnace {
         Furnace{
             path: device.path.to_path_buf()
         }

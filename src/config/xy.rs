@@ -1,15 +1,18 @@
-use serde::{Serialize, Deserialize};
-use crate::{
+
+use serde::{Deserialize, Serialize};
+
+use super::{
     Statistic,
     Channel,
     Solution,
-    mio::Vessel,
+    Vessel,
 };
+
 
 
 /// Stream 
 #[derive(Clone, Deserialize, Serialize, PartialEq, Debug)]
-pub struct Stream {
+pub struct XyStream {
     pub number: u64,
     pub name : String,
     pub sample: Vessel,
@@ -31,7 +34,7 @@ pub struct Stream {
 }
 
 
-impl Default for Stream {
+impl Default for XyStream {
     fn default()-> Self {
         let sample = Vessel{
             xpos: 1100,
@@ -64,4 +67,26 @@ impl Default for Stream {
             solution: vec![Solution::default()],
         }
     }
+}
+
+#[derive(Clone,Default,Debug, Deserialize, Serialize)]
+pub struct XyConfig {
+    pub furnace: Vessel,
+    pub ticport: Vessel,
+    pub xhold: u32,
+    pub yhold: u32,
+    pub zhold: u32,
+    pub xmax: u32,
+    pub ymax: u32,
+    pub zmax: u32,
+    pub xcurrent: u32,
+    pub ycurrent: u32,
+    pub zcurrent: u32,
+    pub stirrer_current: u32,
+    pub stirrer_delay: u32,
+    pub stirrer_current_delution: u32,
+    pub stirrer_delay_delution: u32,
+    pub rinse: u32,
+    pub air: u32,
+    pub air_cod: u32,
 }

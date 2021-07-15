@@ -1,0 +1,33 @@
+/**
+ * @file control-item.item - Subscription item
+ * 
+ * (c) 2008 LAR Process Analysers AG - All rights reserved.
+ *
+ * @author C.Vogt 
+ *
+ * $Id: $ $URL: $
+ **/
+
+// reworked for market 0.7 - see market README
+
+#define SUBSCRIPTION_CLASS control
+#define SUBSCRIPTION_DESCRIPTION "device control for the LAR QuickTOCxy"
+#define SUBSCRIPTION_CALLBACK subscriptionCallback
+#define SUBSCRIPTION_TRIGGERCALLBACK subscriptionTriggerCallback
+#define SUBSCRIPTION_VERSION_INFO "TODO: no special version information"
+
+#define SUBSCRIPTION_IS_SENSOR_ACTIVE (0)
+#define SUBSCRIPTION_IS_ACTOR_ACTIVE (0)
+#define SUBSCRIPTION_IS_IPC_STUB (0)
+
+#include "market-output-start.item"
+#include "control-output.item"
+
+#include "market-debug-start.item"
+#include "control-debug.item"
+
+#include "market-input-start.item"
+#include "control-input.item"
+#include "control-input-calpar.item"
+
+#include "market-end.item"

@@ -43,6 +43,7 @@ pub enum IType {
     Injection,
     Autosampler,
     Stirrer,
+    Cooler,
     Unknown
 }
 
@@ -107,6 +108,7 @@ impl From<&str> for IType {
             "injection"       => IType::Injection,
             "stirrer"         => IType::Stirrer,
             "autosampler"     => IType::Autosampler,
+            "cooler"          => IType::Cooler,
             _                 => IType::Unknown,
         }
     }
@@ -142,6 +144,7 @@ impl fmt::Display for IType {
             IType::Injection  => return write!(f,"injection"),          
             IType::Stirrer    => return write!(f,"stirrer"),        
             IType::Autosampler=> return write!(f,"autosamler"),         
+            IType::Cooler     => return write!(f,"cooler"),         
             IType::Unknown    => return write!(f,"unknown"),        
         }
     }

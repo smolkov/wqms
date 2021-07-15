@@ -1,6 +1,6 @@
 use serde::{Serialize, Deserialize};
-use crate::statistic::Statistic;
-use crate::stream::Stream;
+use crate::config::Statistic;
+use crate::config::XyStream as Stream;
 use crate::Result;
 // use std::time::{SystemTime};
 
@@ -131,4 +131,46 @@ impl Measurement {
         } 
         Ok(need_measurement)
     }
+}
+
+
+
+#[derive(Clone, Deserialize, Serialize, PartialEq, Debug)]
+pub struct CalPoint {
+    pub solution :Solution,
+    pub measurement: Measurement,
+}
+
+impl CalPoint {
+    pub fn new(solution:Solution,measurement: Measurement) -> CalPoint {
+        CalPoint{ solution,measurement}
+    }
+}
+
+#[derive(Clone, Deserialize, Serialize, PartialEq, Debug)]
+pub struct Calibration {
+    pub stream: Stream,
+    pub solutions: Vec<Solution>,
+    pub points: Vec<CalPoint>,
+}
+
+
+impl Calibration {
+    pub fn new(stream:Stream) -> Calibration {
+        let solutions = stream.solution.iter().map(|sol|sol.clone()).collect();
+        let points = Vec::new();
+        Calibration {stream, solutions, points}
+    }
+    pub fn add_measurement(&mut self,measurement:Measurement) -> Result<()> {
+        match self.solutions.pop() {
+            Some(sol) => self.points.push(CalPoint::new(sol,measurement)),
+            None => {}
+        }
+        Ok(())
+    }
+    pub fn next_point(&mut self) -> Result<bool> {
+
+        Ok(!self.solutions.is_empty())
+    }
+
 }

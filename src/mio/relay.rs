@@ -35,25 +35,13 @@ impl From<&Interface> for Relay {
         }
     }
 }
-impl From<&Relay> for digital::DigIN {
-    #[inline]
-    fn from(relay:&Relay) -> digital::DigIN {
-        digital::DigIN{
-            path: relay.path.to_path_buf()
-        }
-    }
-}
-impl From<&Relay> for digital::DigOUT {
-    #[inline]
-    fn from(relay:&Relay) -> digital::DigOUT {
-        digital::DigOUT{
-            path: relay.path.to_path_buf()
-        }
-    }
-}
+
 impl Relay {
     pub fn is_open(&self) -> Result<bool> {
-        digital::DigIN::from(self).is_high()
+        match fs::read_to_string(self.path.join("value"))?.as_str() {
+            "1" => Ok(false),
+            _ => Ok(true),
+        }
     }
     pub fn open(&mut self)  -> Result<()> {
         fs::write(self.path.join("value"), b"1")?;

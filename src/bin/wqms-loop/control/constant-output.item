@@ -1,0 +1,2 @@
+item(__COUNTER__,constant,,,zero,,float32,0,"ppm",FLOAT32_MIN,FLOAT32_MAX,"","gradient of the calibration"), 
+item(__COUNTER__,constant,,,one,,float32,1,"FSR*sec/ppm",FLOAT32_MIN,FLOAT32_MAX,"","gradient of the calibration"), 

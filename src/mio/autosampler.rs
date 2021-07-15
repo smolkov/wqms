@@ -1,8 +1,9 @@
 use std::fmt;
+use std::path::PathBuf;
 use serde::{Serialize, Deserialize};
 use std::cmp::Ordering;
 use crate::Result;
-use crate::brocker;
+use super::Interface;
 // use crate::mio::Valve;
 
 
@@ -112,25 +113,40 @@ impl From<f64> for Speed {
         (n.round() as i32).into()
     }
 }
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-pub struct Axis {
-    speed: u8,
-    pos : u32,
-    sensor: bool,
-    max : u32,
-    current: u32,
-    name: String,
-}
 
-impl Axis{
-    pub fn new(axis:&str) -> Axis {
+
+impl From<Interface> for Axis{
+    fn from(drv:Interface) -> Axis {
         Axis{
+            path: drv.path.to_path_buf(),
             speed: 1,
             pos: 0,
             sensor: false,
             max: 1800,
             current: 1200,
-            name:axis.to_owned(),
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct Axis {
+    path : PathBuf,
+    speed: u8,
+    pos : u32,
+    sensor: bool,
+    max : u32,
+    current: u32,
+}
+
+impl Axis{
+    pub fn new(path:&str) -> Axis {
+        Axis{
+            path: PathBuf::from(path),
+            speed: 1,
+            pos: 0,
+            sensor: false,
+            max: 1800,
+            current: 1200,
         }
     }
     pub fn position(&self) -> Result<u32> {
@@ -145,17 +161,14 @@ impl Axis{
     }
     pub fn set_max(&mut self,max:u32) -> Result<()>{
         self.max = max;
-        brocker::axis_set_max(&self.name,self.max)?;
         Ok(())
     }
     pub fn set_current(&mut self,current:u32) -> Result<()>{
         self.current = current;
-        brocker::axis_set_current(&self.name,self.max)?;
         Ok(())
     }
     pub fn to_pos(&mut self,pos: u32) -> Result<u32> {
         self.sensor = false;
-        self.pos = brocker::axis_to_pos(&self.name,pos,self.speed)?;
         Ok(self.pos)
     }
     pub fn add_pos(&mut self,pos: u32) -> Result<u32> {
@@ -171,22 +184,23 @@ impl Axis{
     pub fn to_sensor(&mut self) -> Result<bool> {
         
         self.sensor = true;
-        self.pos = brocker::axis_to_sensor(&self.name)?;
         self.sensor = self.pos < 1;
         Ok(self.sensor)
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Autosampler{
     pub x: Axis,
     pub y: Axis,
     pub z: Axis,
+    path : PathBuf,
 }
 
 impl Autosampler {
-    pub fn new()-> Autosampler{
+    pub fn new(path:&str)-> Autosampler{
         Autosampler{
+            path: PathBuf::from(path),
             x: Axis::new("x"),
             y: Axis::new("y"),
             z: Axis::new("inj"),

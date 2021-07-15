@@ -2,7 +2,7 @@
 /// Anschlus Analog:IN04
 ///
 use serde::{Deserialize, Serialize};
-use super::Result;
+// use super::Result;
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq)]
 pub struct Humidity {

@@ -1,12 +1,12 @@
 /// Lamp UV
 // use std::prelude::*;
-use std::io;
 use std::fs;
 use std::path::{PathBuf};
 // use async_trait::async_trait;
 // use std::time::{Duration,Instant};
-use super::*;
-
+use super::Interface;
+use serde::{Deserialize, Serialize};
+use crate::Result;
 // use std::convert::TryFrom;
 /// interface transfer
 
@@ -22,12 +22,13 @@ use super::*;
 
 
 /// Lamp interface
+ #[derive(Serialize, Deserialize, Clone, Debug, PartialEq)]
 pub struct Lamp {
     path: PathBuf,
 }
 
-impl From<&Interface> for Lamp{
-    fn from(drv:&Interface) -> Lamp {
+impl From<Interface> for Lamp{
+    fn from(drv:Interface) -> Lamp {
         Lamp{
             path: drv.path.to_path_buf()
         }
@@ -35,16 +36,15 @@ impl From<&Interface> for Lamp{
 }
 
 impl Lamp {
-    pub fn radiation_on(&mut self)  -> io::Result<()> {
+    pub fn radiation_on(&mut self)  -> Result<()> {
         fs::write(self.path.join("value"), b"1")?;
         Ok(())
     }
-    pub fn radiation_off(&mut self) -> io::Result<()> {
+    pub fn radiation_off(&mut self) -> Result<()> {
         fs::write(self.path.join("value"), b"0")?;
         Ok(())
     }
 }
-
 
 
 // pub fn create(path:&Path) -> Result<Lamp> {
