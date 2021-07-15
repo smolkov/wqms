@@ -29,12 +29,12 @@ impl Valve {
     }
     /// Open valve
     pub fn open(&mut self) -> Result<()> {
-        fs::write(self.path.join("state"), b"1")?;
+        fs::write(self.path.join("state"), b"0")?;
         Ok(())
     }
     /// Close valve
     pub fn close(&mut self) -> Result<()> {
-        fs::write(self.path.join("state"), b"0")?;
+        fs::write(self.path.join("state"), b"1")?;
         Ok(())
     }
 }

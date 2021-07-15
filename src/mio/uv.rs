@@ -8,6 +8,7 @@
 // use std::prelude::*;
 // use std::io;
 use std::path::PathBuf;
+use std::convert::TryFrom;
 // use std::stream::Stream;
 use super::{
     Pump,
@@ -60,7 +61,7 @@ impl Uv {
         let cal    = Valve::from(mio.create_interface("cal")?);
         let tic    = Valve::from(mio.create_interface("tic")?);
         let bypass = Valve::from(mio.create_interface("bypas")?);
-        let gp     = Pump::from(mio.create_interface("gp")?);
+        let gp      = Pump::try_from(mio.create_interface("gp")?)?;
         let ndir1  = Sensor::from(mio.create_interface("ndir1")?);
         let ndir2  = Sensor::from(mio.create_interface("ndir2")?);
         let sampl  = vec![sv1, sv2 ,sv3, sv4 ,sv5, sv6];

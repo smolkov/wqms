@@ -32,6 +32,7 @@ pub enum IType {
     Lamp,
     GearPump,
     Furnace,
+    TicPort,
     Temperatur,
     Humidity,
     Airflow,
@@ -97,6 +98,7 @@ impl From<&str> for IType {
             "lamp"            => IType::Lamp,
             "pump"            => IType::GearPump,
             "furnace"         => IType::Furnace,
+            "ticport"         => IType::TicPort,
             "airflow"         => IType::Airflow,
             "pressure"        => IType::Pressure,
             "temperatur"      => IType::Temperatur,
@@ -133,6 +135,7 @@ impl fmt::Display for IType {
             IType::Lamp       => return write!(f,"lamp"),     
             IType::GearPump   => return write!(f,"pump"),         
             IType::Furnace    => return write!(f,"furnace"),        
+            IType::TicPort    => return write!(f,"ticport"),        
             IType::Airflow    => return write!(f,"airflow"),        
             IType::Pressure   => return write!(f,"pressure"),         
             IType::Temperatur => return write!(f,"temperatur"),           
@@ -266,12 +269,6 @@ impl Interface {
         }
     }
 
-    // pub fn driver(&self) -> Result<bool> {
-        // match fs::read_to_string(self.path.join("driver"))?.as_str() {
-            // "1" => Ok(true),
-            // _ => Ok(false),
-        // }
-    // }
     pub fn is_error(&self) -> Result<bool> {
         if self.path.join(ERROR).is_file() {
             Ok(true)
@@ -297,6 +294,8 @@ impl Interface {
         Ok(())
     }
 }
+
+
 
 fn bool_true() -> bool {
     true

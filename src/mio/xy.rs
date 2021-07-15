@@ -1,4 +1,5 @@
 use std::path::PathBuf;
+use std::convert::TryFrom;
 
 use super::{
     // Humidity,
@@ -51,12 +52,12 @@ impl Xy {
     pub fn new(mio: &mut Mio) -> Result<Xy> {
         // let gp1 = Pump::from(mio.create_interface("gp1")?);
         let path = mio.path.to_path_buf();
-        let gp1 = Pump::from(mio.create_interface("gp1")?);
-        let gp2 = Pump::from(mio.create_interface("gp2")?);
-        let gp3 = Pump::from(mio.create_interface("gp3")?);
-        let gp4 = Pump::from(mio.create_interface("gp4")?);
-        let gp5 = Pump::from(mio.create_interface("gp5")?);
-        let gp6 = Pump::from(mio.create_interface("gp6")?);
+        let gp1 = Pump::try_from(mio.create_interface("gp1")?)?;
+        let gp2 = Pump::try_from(mio.create_interface("gp2")?)?;
+        let gp3 = Pump::try_from(mio.create_interface("gp3")?)?;
+        let gp4 = Pump::try_from(mio.create_interface("gp4")?)?;
+        let gp5 = Pump::try_from(mio.create_interface("gp5")?)?;
+        let gp6 = Pump::try_from(mio.create_interface("gp6")?)?;
 
         let fluid1 = Fluid::from(mio.create_interface("fluid1")?);
         let fluid2 = Fluid::from(mio.create_interface("fluid2")?);
@@ -67,7 +68,7 @@ impl Xy {
 
         let sample_pump = [gp1, gp2, gp3, gp4, gp5, gp6];
         let fluid = [fluid1, fluid2, fluid3, fluid4, fluid5, fluid6];
-        let condensat_pump = Pump::from(mio.create_interface("condenz_gp")?);
+        let condensat_pump = Pump::try_from(mio.create_interface("condenz_gp")?)?;
         let humidity_valve = Valve::from(mio.create_interface("humidity_valve")?);
         let tic_valve = Valve::from(mio.create_interface("tic_valve")?);
         let injection_valve = Valve::from(mio.create_interface("injection_valve")?);
