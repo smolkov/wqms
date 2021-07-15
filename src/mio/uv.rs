@@ -7,7 +7,7 @@
 /// 
 // use std::prelude::*;
 // use std::io;
-
+use std::path::PathBuf;
 // use std::stream::Stream;
 use super::{
     Pump,
@@ -34,6 +34,7 @@ use crate::Result;
 
 #[derive(Clone,Deserialize, Serialize, Debug)]
 pub struct Uv {
+    path : PathBuf,
     pub lamp:   Lamp,
     pub sampl:  Vec<Valve>,
     pub cal:    Valve,
@@ -48,6 +49,7 @@ pub struct Uv {
 impl Uv {
 
     pub fn new(mio:&mut Mio) -> Result<Uv> {
+        let path = mio.path.to_path_buf();
         let lamp         = Lamp::from(mio.create_interface("lamp")?);
         let sv1    = Valve::from(mio.create_interface("valve1")?);
         let sv2    = Valve::from(mio.create_interface("valve2")?);
@@ -63,7 +65,7 @@ impl Uv {
         let ndir2  = Sensor::from(mio.create_interface("ndir2")?);
         let sampl  = vec![sv1, sv2 ,sv3, sv4 ,sv5, sv6];
         let ndir   = vec![ndir1,ndir2];
-        Ok(Uv{lamp,sampl,cal,tic,bypass,gp,ndir})
+        Ok(Uv{path,lamp,sampl,cal,tic,bypass,gp,ndir})
     }
     
 }

@@ -1,3 +1,5 @@
+use std::path::PathBuf;
+
 use super::{
     Airflow, Cooler, Fluid, Furnace, Pump,Sensor, Stirrer,Mio,
     TicPort, Valve
@@ -7,6 +9,7 @@ use crate::Result;
 
 #[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct Loop {
+    path: PathBuf,
     pub humidity_valve: Valve,
     pub furnace: Furnace,
     pub ticport: TicPort,
@@ -42,6 +45,8 @@ pub struct Loop {
 impl Loop {
     pub fn new(mio:&mut Mio) -> Result<Loop> {
         // let gp1 = Pump::from(mio.create_interface("gp1")?);
+        let path = mio.path.to_path_buf();
+
         let humidity_valve = Valve::from(mio.create_interface("humidity_valve")?);
         let furnace = Furnace::from(mio.create_interface("furnace")?);
         let ticport = TicPort::from(mio.create_interface("ticport")?);
@@ -69,7 +74,7 @@ impl Loop {
         let codo= Sensor::from(mio.create_interface("codo")?);
         let tnb = Sensor::from(mio.create_interface("tnb")?);
         Ok(Loop{
-            humidity_valve,furnace,ticport,injection_block,tic_valve,y4y5,y4y6,sample_valve,y3y9,stripping_valve,y5y9,y6y1,condensat_pump,pump,fluid,gp10,stirrer,cooler,airflow,ndir1,ndir2,codo,tnb
+            path,humidity_valve,furnace,ticport,injection_block,tic_valve,y4y5,y4y6,sample_valve,y3y9,stripping_valve,y5y9,y6y1,condensat_pump,pump,fluid,gp10,stirrer,cooler,airflow,ndir1,ndir2,codo,tnb
         })
     }
 }
