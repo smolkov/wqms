@@ -19,15 +19,22 @@ femme = "2.1.1"
 anyhow = "1.0.37"
 
 # sirialize
-serde_json = "1.0"
 serde = { version = "1.0.118", features = ["derive"] }
 serde_derive = "1.0.93"
+serde_json = "1.0"
 
 # utils
 dirs = "3.0.1"
 chrono = "0.4.19"
 
 # api 
-redis = "0.20.0"
+uuid = { version = "0.8", features = ["v4", "serde"] }
+oauth2 = { version = "4.0.0", features = ["reqwest"], default-features = false  }
+redis = "0.21.0"
 async-std = { version = "1.7.0", features = ["attributes"] }
+async-task = "4.0.2"
+async-trait = "0.1.41"
 tide = "0.16.0"
+tera = "1.6.1"
+tide-tera = "0.2.4"
+surf = { version = "2.1.0" }

@@ -1,45 +1,34 @@
-// use std::{env, time::Duration};
-// use tide::{sessions::SessionMiddleware, Redirect};
+use tera::Tera;
+use tide::prelude::*;
+use tide_tera::prelude::*;
+mod pages;
+mod state;
+mod handles;
 
-// pub mod records;
-// mod templates;
-// use handlebars::Handlebars;
-// use tide_handlebars::prelude::*;
-// use async_std::sync::Arc;
-// use async_std::task;
-// use tide::{sessions::SessionMiddleware, Redirect};
-
-#[derive(Clone)]
-pub struct State {
-    // db: SqlitePool,
-    // client: redis::Client,
-    // registry: Arc<Handlebars<'static>>,
-}
-
-impl State {
-   pub fn new()  -> State {
-       State{}
-   }
-}
+use state::State;
 
 pub type Request = tide::Request<State>;
 
 #[async_std::main]
 async fn main() -> tide::Result<()> {
     tide::log::start();
-    // create tunnel
-    let mut app = tide::with_state(State::new());
-    app.with(tide::sessions::SessionMiddleware::new(
-        tide::sessions::MemoryStore::new(),
-        std::env::var("TIDE_SECRET")
-            .expect("Please provide a TIDE_SECRET value of at \
-                      least 32 bytes in order to run this example",
-            )
-            .as_bytes(),
-    )); 
+    let client = redis::Client::open("redis://127.0.0.1/").unwrap();
+    let mut tera = Tera::new("www/templates/**/*")?;
+    tera.autoescape_on(vec!["html"]);
+         
+    let mut app = tide::with_state(State{client,tera});
+    let secret = "pdxeaSj/Pfzn07tl8QvJVnVeHIFeAcslGgDTLG3iCC1KcapbE8aSirn8l6nryOqs
+    pX5rJ6f/IbVDK6eGxEygXQ==";
+    app.with(tide::sessions::SessionMiddleware::new( tide::sessions::MemoryStore::new(), secret.as_bytes(),));
 
    // Redirect hackers to YouTube.
     app.at("/.env").get(tide::Redirect::new("https://www.youtube.com/watch?v=dQw4w9WgXcQ"));
+
+    // app.at("/").get(tide::Redirect::new("/welcome"));
+    // Views
+    app.at("/").get(pages::index);
+    app.at("/wifi").get(pages::wifi::index);
+
     app.at("/public").serve_dir("www/public/")?;
     app.listen("127.0.0.1:8000").await?;
     Ok(())
